@@ -12,13 +12,15 @@
 /**
  * Sparks show seeds when dormant or a lucky image when touched.
  */
-class Spark : public ofxMSAParticle {
+class Spark: public ofxMSAParticle {
 public:
 	Spark();
 	Spark(ofPoint pos, float m = 1.0f, float d = 1.0f);
 	Spark(ofxMSAParticle &p);
 	virtual ~Spark();
-	void init();
+	virtual void init();
+	virtual void update();
+	virtual void draw();
 };
 
 #endif /* SPARK_H_ */

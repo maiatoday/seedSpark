@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup() {
 	setupKinect();
+    setScreenRatios();
 	setupParticles();
 }
 
@@ -41,12 +42,12 @@ void testApp::mouseDragged(int x, int y, int button) {
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button) {
-
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button) {
 
+    addRandomForce();
 }
 
 //--------------------------------------------------------------
@@ -195,6 +196,7 @@ void testApp::setScreenRatios(void)
 #define MAX_BOUNCE				0.9
 #define NODE_MIN_RADIUS			2
 #define NODE_MAX_RADIUS			7
+#define FORCE_AMOUNT			10
 void testApp::setupParticles() {
 	sparkCount = START_SPARK_COUNT;
     physics.setGravity(ofPoint(0, GRAVITY/2, 0));
@@ -238,6 +240,14 @@ Spark* testApp:: makeSpark(ofPoint pos, float  m = 1.0f, float d = 1.0f)
     physics.addParticle(p);
     p->release();	// cos addParticle(p) retains it
     return p;
+}
+void testApp::addRandomForce()
+{
+	float f = FORCE_AMOUNT;
+    for(unsigned int i=0; i<physics.numberOfParticles(); i++) {
+        ofxMSAParticle *p = physics.getParticle(i);
+        if(p->isFree()) p->addVelocity(ofPoint(ofRandom(-f, f), ofRandom(-f, f), ofRandom(-f, f)));
+    }
 }
 void testApp::updateParticles() {
 	physics.update();

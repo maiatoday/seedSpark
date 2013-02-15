@@ -63,6 +63,7 @@ public:
 	void drawParticles();
 	void initScene();
 	void addRandomParticle();
+    void addRandomForce();
 	Spark* makeSpark(ofPoint pos, float m, float d);
 	ofxMSAPhysics physics;
     int sparkCount;

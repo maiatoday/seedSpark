@@ -48,6 +48,17 @@ void Spark::init()
 //    label = 0;
 //    maxDistWidthSquare = MAX_DIST_SQR;
 //
-//    addVelocity(ofPoint(ofRandom(-10, 10), ofRandom(-10, 10), ofRandom(-10, 10)));
+    addVelocity(ofPoint(ofRandom(-10, 10), ofRandom(-10, 10), ofRandom(-10, 10)));
+}
+
+void	Spark::update()
+{
+}
+
+void	Spark::draw()
+{
+	ofSetColor(255,0,255,255);
+	ofRect(getX(),getY(),15, 15);
+
 }
 
