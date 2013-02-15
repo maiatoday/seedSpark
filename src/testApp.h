@@ -2,6 +2,8 @@
 #include "ofxOpenNI.h"
 #include "ofMain.h"
 #include "LuckyDip.h"
+#include "Spark.h"
+#include "ofxMSAPhysics.h"
 
 class testApp: public ofBaseApp {
 
@@ -43,11 +45,30 @@ public:
 	ofImage allUserMasks, user1Mask, user2Mask, depthRangeMask;
 
 	float filterFactor;
+	//------------------ kinect size conversions
+
+    void setScreenRatios(void);
+	int width;
+	int kinectWidth;
+	int height;
+	int kinectHeight;
+	float fromKinectWidth;
+	float fromKinectHeight;
+	float toKinectWidth;
+	float toKinectHeight;
 
 	//------------------ particle methods and variables
-	LuckyDip lucky;
 	void setupParticles();
 	void updateParticles();
 	void drawParticles();
+	void initScene();
+	void addRandomParticle();
+	Spark* makeSpark(ofPoint pos, float m, float d);
+	ofxMSAPhysics physics;
+    int sparkCount;
+
+	//----------------- visuals
+    LuckyDip lucky;
+
 
 };

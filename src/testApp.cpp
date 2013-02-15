@@ -161,12 +161,89 @@ void testApp::drawMasks() {
 
 }
 
+void testApp::setScreenRatios(void)
+{
+    int windowMode = ofGetWindowMode();
+
+    kinectWidth = 640;
+    kinectHeight = 480;
+    if(windowMode == OF_FULLSCREEN) {
+        width = ofGetScreenWidth();
+        height = ofGetScreenHeight();
+        fromKinectWidth = (float)width/(float)kinectWidth;
+        fromKinectHeight = (float)height/(float)kinectHeight;
+        toKinectWidth = (float)kinectWidth/(float)width;
+        toKinectHeight = (float)kinectHeight/(float)height;
+    } else if(windowMode == OF_WINDOW) {
+        width = ofGetWidth();
+        height = ofGetHeight();
+        fromKinectWidth = (float)width/(float)kinectWidth;
+        fromKinectHeight = (float)height/(float)kinectHeight;
+        toKinectWidth = (float)kinectWidth/(float)width;
+        toKinectHeight = (float)kinectHeight/(float)height;
+    }
+    physics.setWorldSize(ofPoint(0, 0, 0), ofPoint(width, height, width));
+}
+
+#define START_SPARK_COUNT		200
+#define	GRAVITY					1
+#define SECTOR_COUNT			10
+#define MIN_MASS				1
+#define MAX_MASS				3
+
+#define MIN_BOUNCE				0.2
+#define MAX_BOUNCE				0.9
+#define NODE_MIN_RADIUS			2
+#define NODE_MAX_RADIUS			7
 void testApp::setupParticles() {
+	sparkCount = START_SPARK_COUNT;
+    physics.setGravity(ofPoint(0, GRAVITY/2, 0));
+
+    // set world dimensions, not essential, but speeds up collision
+    physics.setWorldSize(ofPoint(0, 0, 0), ofPoint(width, height, width));
+    physics.setSectorCount(SECTOR_COUNT);
+    physics.setDrag(0.97f);
+    physics.setDrag(1);		// FIXTHIS
+    //physics.enableCollision();
+
+    initScene();
+    for(int i=0; i<sparkCount; i++) addRandomParticle();
 
 }
+void testApp::initScene()
+{
+    // clear all particles and springs etc
+    physics.clear();
+
+}
+void testApp:: addRandomParticle()
+{
+    float posX		= ofRandom(0, width);
+    float posY		= ofRandom(0, height);
+    float posZ		= ofRandom(-width/2, width/2);
+    float mass		= ofRandom(MIN_MASS, MAX_MASS);
+    float bounce	= ofRandom(MIN_BOUNCE, MAX_BOUNCE);
+    float radius	= ofMap(mass, MIN_MASS, MAX_MASS, NODE_MIN_RADIUS*fromKinectWidth, NODE_MAX_RADIUS*fromKinectWidth);
+
+    // physics.makeParticle returns a particle pointer so you can customize it
+    Spark* p = makeSpark(ofPoint(posX, posY, posZ), 1.0f, 1.0f);
+
+    // and set a bunch of properties (you don't have to set all of them, there are defaults)
+    p->setMass(mass)->setBounce(bounce)->setRadius(radius)->enableCollision()->makeFree();
+}
+
+Spark* testApp:: makeSpark(ofPoint pos, float  m = 1.0f, float d = 1.0f)
+{
+	Spark* p = new Spark(pos, m, d);
+    physics.addParticle(p);
+    p->release();	// cos addParticle(p) retains it
+    return p;
+}
 void testApp::updateParticles() {
+	physics.update();
 
 }
 void testApp::drawParticles() {
+	physics.draw();
 
 }
