@@ -48,16 +48,33 @@ void Spark::init()
 //    label = 0;
 //    maxDistWidthSquare = MAX_DIST_SQR;
 //
+	frontUser = false;
+	userId = 0;
     addVelocity(ofPoint(ofRandom(-10, 10), ofRandom(-10, 10), ofRandom(-10, 10)));
 }
 
-void	Spark::update()
+void	Spark::update(int newUserId, bool newFrontUser)
 {
+	if (newUserId != userId) {
+		// we chanted users or left a user
+	}
+	userId = newUserId;
+	frontUser = newFrontUser;
 }
 
 void	Spark::draw()
 {
-	ofSetColor(255,0,255,255);
+	if (userId == 0) {
+		// not over a user
+		ofSetColor(128,128,128,128);
+	} else if (frontUser){
+		// over the front user
+		ofSetColor(255,0,255,255);
+	} else {
+		// over a user
+		ofSetColor(255,128,0,255);
+
+	}
 	ofRect(getX(),getY(),15, 15);
 
 }

@@ -2,20 +2,20 @@
 
 //--------------------------------------------------------------
 void testApp::setup() {
-	setupKinect();
+//	setupKinect();
     setScreenRatios();
 	setupParticles();
 }
 
 //--------------------------------------------------------------
 void testApp::update() {
-	updateKinect();
+//	updateKinect();
 	updateParticles();
 }
 
 //--------------------------------------------------------------
 void testApp::draw() {
-	drawKinect();
+//	drawKinect();
 	drawParticles();
 
 }

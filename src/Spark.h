@@ -19,8 +19,11 @@ public:
 	Spark(ofxMSAParticle &p);
 	virtual ~Spark();
 	virtual void init();
-	virtual void update();
+	virtual void update(int newUserId, bool newFrontUser);
 	virtual void draw();
+protected:
+	bool frontUser;
+	int userId;
 };
 
 #endif /* SPARK_H_ */
