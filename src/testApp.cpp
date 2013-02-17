@@ -1,5 +1,13 @@
 #include "testApp.h"
+testApp::testApp(){
 
+	lucky = new LuckyDip("bin/data/images/lucky");
+}
+
+testApp::~testApp()
+{
+    delete lucky;
+}
 //--------------------------------------------------------------
 void testApp::setup() {
 	USE_KINECT = true;
@@ -258,6 +266,7 @@ void testApp::addRandomParticle() {
 
 Spark* testApp::makeSpark(ofPoint pos, float m = 1.0f, float d = 1.0f) {
 	Spark* p = new Spark(pos, m, d);
+	p->setGlyph(lucky->getSampleGlyph());
 	physics.addParticle(p);
 	p->release();	// cos addParticle(p) retains it
 	return p;
