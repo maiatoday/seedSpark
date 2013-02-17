@@ -53,7 +53,6 @@ void Spark::init() {
 	bladeInc = ofRandom(-20, 20);
 }
 
-
 void Spark::update(char maskPixel, bool newFrontUser) {
 	if (maskPixel != userId) {
 		// we changed users or left a user
@@ -103,7 +102,7 @@ void Spark::drawSeed(ofPoint pos) {
 		blade.newSubPath();
 		blade.arc(pos, 25, 25, bladeAngle - 4, bladeAngle + 4);
 		blade.newSubPath();
-		bladeAngle += (120+bladeInc);
+		bladeAngle += (120 + bladeInc);
 	}
 	blade.draw();
 
@@ -112,6 +111,7 @@ void Spark::drawSpark(ofPoint pos) {
 
 //	ofSetColor(255, 128, 0, 255);
 //	ofRect(getX(), getY(), 20, 20);
+	ofEnableAlphaBlending();
 	glyph.draw(pos);
 
 }
