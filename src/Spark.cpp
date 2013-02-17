@@ -7,28 +7,26 @@
 
 #include "Spark.h"
 
-Spark::Spark(): ofxMSAParticle()
-{
-    init();
+Spark::Spark() :
+		ofxMSAParticle() {
+	init();
 }
 
-
-Spark::Spark(ofPoint pos, float m, float d) : ofxMSAParticle(pos, m, d)
-{
-    init();
+Spark::Spark(ofPoint pos, float m, float d) :
+		ofxMSAParticle(pos, m, d) {
+	init();
 }
 
-Spark::Spark(ofxMSAParticle &p) : ofxMSAParticle(p)
-{
-    init();
+Spark::Spark(ofxMSAParticle &p) :
+		ofxMSAParticle(p) {
+	init();
 }
 
 Spark::~Spark() {
 	// TODO Auto-generated destructor stub
 }
 
-void Spark::init()
-{
+void Spark::init() {
 //    pMyFont = NULL;
 //    outsideColor.a = 255;
 //    outsideColor.r = 130;
@@ -50,11 +48,12 @@ void Spark::init()
 //
 	frontUser = false;
 	userId = 0;
-    addVelocity(ofPoint(ofRandom(-10, 10), ofRandom(-10, 10), ofRandom(-10, 10)));
+	addVelocity(ofPoint(ofRandom(-10, 10), ofRandom(-10, 10), ofRandom(-10, 10)));
+	startAngle = ofRandom(-10, 40);
+	bladeInc = ofRandom(-20, 20);
 }
 
-void	Spark::update(char maskPixel, bool newFrontUser)
-{
+void Spark::update(char maskPixel, bool newFrontUser) {
 	if (maskPixel != userId) {
 		// we changed users or left a user
 	}
@@ -62,20 +61,54 @@ void	Spark::update(char maskPixel, bool newFrontUser)
 	frontUser = newFrontUser;
 }
 
-void	Spark::draw()
-{
+void Spark::draw() {
+	ofPushStyle();
 	if (userId == 0) {
 		// not over a user
-		ofSetColor(128,128,128,128);
-	} else if (frontUser){
-		// over the front user
-		ofSetColor(255,0,255,255);
+		drawSeed();
 	} else {
 		// over a user
-		ofSetColor(255,128,0,255);
+		drawSpark();
 
 	}
-	ofRect(getX(),getY(),15, 15);
+	ofPopStyle();
 
 }
 
+void Spark::drawSeed() {
+
+	ofColor lineColor;
+	lineColor.set(128, 128, 128, 128);
+	ofPoint pos;
+	pos.set(getX(), getY(), getZ());
+
+	ofSetColor(lineColor);
+	ofCircle(pos, 2);
+	ofPath blade;
+	blade.setArcResolution(100);
+	blade.setFilled(false);
+	blade.setStrokeColor(lineColor);
+	blade.setStrokeWidth(2);
+	int bladeAngle = startAngle;
+	for (int i = 0; i < 3; i++) {
+		blade.arc(pos, 7, 7, bladeAngle - 10, bladeAngle + 10);
+		blade.newSubPath();
+		blade.arc(pos, 10, 10, bladeAngle - 10, bladeAngle + 10);
+		blade.newSubPath();
+		blade.arc(pos, 15, 15, bladeAngle - 10, bladeAngle + 10);
+		blade.newSubPath();
+		blade.arc(pos, 20, 20, bladeAngle - 6, bladeAngle + 6);
+		blade.newSubPath();
+		blade.arc(pos, 25, 25, bladeAngle - 4, bladeAngle + 4);
+		blade.newSubPath();
+		bladeAngle += (120+bladeInc);
+	}
+	blade.draw();
+
+}
+void Spark::drawSpark() {
+
+	ofSetColor(255, 128, 0, 255);
+	ofRect(getX(), getY(), 20, 20);
+
+}

@@ -171,12 +171,15 @@ void testApp::drawMasks() {
 }
 
 void testApp::drawAllUserMask() {
+	ofPushStyle();
+	ofSetColor(255,255,255,80);
 	glPushMatrix();
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
 	allUserMasks.draw(0, 0, width, height);
 	glDisable(GL_BLEND);
 	glPopMatrix();
+	ofPopStyle();
 
 }
 

@@ -24,6 +24,10 @@ public:
 protected:
 	bool frontUser;
 	char userId;
+	void drawSeed();
+	void drawSpark();
+	int startAngle;
+	int bladeInc;
 };
 
 #endif /* SPARK_H_ */
