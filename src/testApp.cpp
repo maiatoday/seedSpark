@@ -2,20 +2,28 @@
 
 //--------------------------------------------------------------
 void testApp::setup() {
-//	setupKinect();
-    setScreenRatios();
+	USE_KINECT = true;
+	if (USE_KINECT) {
+		setupKinect();
+	}
+	setScreenRatios();
 	setupParticles();
 }
 
 //--------------------------------------------------------------
 void testApp::update() {
-//	updateKinect();
+	if (USE_KINECT) {
+		updateKinect();
+	}
 	updateParticles();
 }
 
 //--------------------------------------------------------------
 void testApp::draw() {
-//	drawKinect();
+	if (USE_KINECT) {
+//		drawKinect();
+		drawAllUserMask();
+	}
 	drawParticles();
 
 }
@@ -47,7 +55,7 @@ void testApp::mousePressed(int x, int y, int button) {
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button) {
 
-    addRandomForce();
+	addRandomForce();
 }
 
 //--------------------------------------------------------------
@@ -67,7 +75,7 @@ void testApp::dragEvent(ofDragInfo dragInfo) {
 
 void testApp::setupKinect() {
 	isLive = true;
-	isTracking = false;
+	isTracking = true;
 	isTrackingHands = true;
 	isFiltering = false;
 	isCloud = false;
@@ -152,7 +160,7 @@ void testApp::drawKinect() {
 }
 void testApp::drawMasks() {
 	glPushMatrix();
-	glEnable (GL_BLEND);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
 	allUserMasks.draw(640, 0, 640, 480);
 	glDisable(GL_BLEND);
@@ -162,28 +170,39 @@ void testApp::drawMasks() {
 
 }
 
-void testApp::setScreenRatios(void)
-{
-    int windowMode = ofGetWindowMode();
+void testApp::drawAllUserMask() {
+	glPushMatrix();
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
+	allUserMasks.draw(0, 0, width, height);
+	glDisable(GL_BLEND);
+	glPopMatrix();
 
-    kinectWidth = 640;
-    kinectHeight = 480;
-    if(windowMode == OF_FULLSCREEN) {
-        width = ofGetScreenWidth();
-        height = ofGetScreenHeight();
-        fromKinectWidth = (float)width/(float)kinectWidth;
-        fromKinectHeight = (float)height/(float)kinectHeight;
-        toKinectWidth = (float)kinectWidth/(float)width;
-        toKinectHeight = (float)kinectHeight/(float)height;
-    } else if(windowMode == OF_WINDOW) {
-        width = ofGetWidth();
-        height = ofGetHeight();
-        fromKinectWidth = (float)width/(float)kinectWidth;
-        fromKinectHeight = (float)height/(float)kinectHeight;
-        toKinectWidth = (float)kinectWidth/(float)width;
-        toKinectHeight = (float)kinectHeight/(float)height;
-    }
-    physics.setWorldSize(ofPoint(0, 0, 0), ofPoint(width, height, width));
+}
+
+void testApp::setScreenRatios(void) {
+	int windowMode = ofGetWindowMode();
+
+//	kinectWidth = recordUser.getWidth();
+//	kinectHeight = recordUser.getHeight();
+	kinectWidth = 640;
+	kinectHeight = 480;
+	if (windowMode == OF_FULLSCREEN) {
+		width = ofGetScreenWidth();
+		height = ofGetScreenHeight();
+		fromKinectWidth = (float) width / (float) kinectWidth;
+		fromKinectHeight = (float) height / (float) kinectHeight;
+		toKinectWidth = (float) kinectWidth / (float) width;
+		toKinectHeight = (float) kinectHeight / (float) height;
+	} else if (windowMode == OF_WINDOW) {
+		width = ofGetWidth();
+		height = ofGetHeight();
+		fromKinectWidth = (float) width / (float) kinectWidth;
+		fromKinectHeight = (float) height / (float) kinectHeight;
+		toKinectWidth = (float) kinectWidth / (float) width;
+		toKinectHeight = (float) kinectHeight / (float) height;
+	}
+	physics.setWorldSize(ofPoint(0, 0, 0), ofPoint(width, height, width));
 }
 
 #define START_SPARK_COUNT		200
@@ -199,58 +218,69 @@ void testApp::setScreenRatios(void)
 #define FORCE_AMOUNT			10
 void testApp::setupParticles() {
 	sparkCount = START_SPARK_COUNT;
-    physics.setGravity(ofPoint(0, GRAVITY/2, 0));
+	physics.setGravity(ofPoint(0, GRAVITY / 2, 0));
 
-    // set world dimensions, not essential, but speeds up collision
-    physics.setWorldSize(ofPoint(0, 0, 0), ofPoint(width, height, width));
-    physics.setSectorCount(SECTOR_COUNT);
-    physics.setDrag(0.97f);
-    physics.setDrag(1);		// FIXTHIS
-    //physics.enableCollision();
+	// set world dimensions, not essential, but speeds up collision
+	physics.setWorldSize(ofPoint(0, 0, 0), ofPoint(width, height, width));
+	physics.setSectorCount(SECTOR_COUNT);
+	physics.setDrag(0.97f);
+	physics.setDrag(1);		// FIXTHIS
+	//physics.enableCollision();
 
-    initScene();
-    for(int i=0; i<sparkCount; i++) addRandomParticle();
-
-}
-void testApp::initScene()
-{
-    // clear all particles and springs etc
-    physics.clear();
+	initScene();
+	for (int i = 0; i < sparkCount; i++)
+		addRandomParticle();
 
 }
-void testApp:: addRandomParticle()
-{
-    float posX		= ofRandom(0, width);
-    float posY		= ofRandom(0, height);
-    float posZ		= ofRandom(-width/2, width/2);
-    float mass		= ofRandom(MIN_MASS, MAX_MASS);
-    float bounce	= ofRandom(MIN_BOUNCE, MAX_BOUNCE);
-    float radius	= ofMap(mass, MIN_MASS, MAX_MASS, NODE_MIN_RADIUS*fromKinectWidth, NODE_MAX_RADIUS*fromKinectWidth);
+void testApp::initScene() {
+	// clear all particles and springs etc
+	physics.clear();
 
-    // physics.makeParticle returns a particle pointer so you can customize it
-    Spark* p = makeSpark(ofPoint(posX, posY, posZ), 1.0f, 1.0f);
+}
+void testApp::addRandomParticle() {
+	float posX = ofRandom(0, width);
+	float posY = ofRandom(0, height);
+	float posZ = ofRandom(-width / 2, width / 2);
+	float mass = ofRandom(MIN_MASS, MAX_MASS);
+	float bounce = ofRandom(MIN_BOUNCE, MAX_BOUNCE);
+	float radius = ofMap(mass, MIN_MASS, MAX_MASS, NODE_MIN_RADIUS * fromKinectWidth,
+			NODE_MAX_RADIUS * fromKinectWidth);
 
-    // and set a bunch of properties (you don't have to set all of them, there are defaults)
-    p->setMass(mass)->setBounce(bounce)->setRadius(radius)->enableCollision()->makeFree();
+	// physics.makeParticle returns a particle pointer so you can customize it
+	Spark* p = makeSpark(ofPoint(posX, posY, posZ), 1.0f, 1.0f);
+
+	// and set a bunch of properties (you don't have to set all of them, there are defaults)
+	p->setMass(mass)->setBounce(bounce)->setRadius(radius)->enableCollision()->makeFree();
 }
 
-Spark* testApp:: makeSpark(ofPoint pos, float  m = 1.0f, float d = 1.0f)
-{
+Spark* testApp::makeSpark(ofPoint pos, float m = 1.0f, float d = 1.0f) {
 	Spark* p = new Spark(pos, m, d);
-    physics.addParticle(p);
-    p->release();	// cos addParticle(p) retains it
-    return p;
+	physics.addParticle(p);
+	p->release();	// cos addParticle(p) retains it
+	return p;
 }
-void testApp::addRandomForce()
-{
+void testApp::addRandomForce() {
 	float f = FORCE_AMOUNT;
-    for(unsigned int i=0; i<physics.numberOfParticles(); i++) {
-        ofxMSAParticle *p = physics.getParticle(i);
-        if(p->isFree()) p->addVelocity(ofPoint(ofRandom(-f, f), ofRandom(-f, f), ofRandom(-f, f)));
-    }
+	for (unsigned int i = 0; i < physics.numberOfParticles(); i++) {
+		ofxMSAParticle *p = physics.getParticle(i);
+		if (p->isFree())
+			p->addVelocity(ofPoint(ofRandom(-f, f), ofRandom(-f, f), ofRandom(-f, f)));
+	}
 }
 void testApp::updateParticles() {
 	physics.update();
+
+	for (unsigned int i = 0; i < physics.numberOfParticles(); i++) {
+		Spark *p = static_cast<Spark*>(physics.getParticle(i));
+
+		int x = p->getX() * toKinectWidth;
+		int y = p->getY() * toKinectHeight;
+		//        int z = p->getZ();
+		if (USE_KINECT && isTracking && isMasking) {
+			char c = allUserMasks.getPixelsRef()[allUserMasks.width * y + x];
+			p->update(c, false);
+		}
+	}
 
 }
 void testApp::drawParticles() {

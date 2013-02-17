@@ -23,6 +23,7 @@ public:
 	void gotMessage(ofMessage msg);
 
 	//------------------ kinect methods and variables
+	bool USE_KINECT;
 	void setupKinect();
 	void updateKinect();
 	void drawKinect();
@@ -39,6 +40,7 @@ public:
 	ofxUserGenerator recordUser;
 
 	void drawMasks();
+	void drawAllUserMask();
 
 	int nearThreshold, farThreshold;
 

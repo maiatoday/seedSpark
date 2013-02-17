@@ -53,12 +53,12 @@ void Spark::init()
     addVelocity(ofPoint(ofRandom(-10, 10), ofRandom(-10, 10), ofRandom(-10, 10)));
 }
 
-void	Spark::update(int newUserId, bool newFrontUser)
+void	Spark::update(char maskPixel, bool newFrontUser)
 {
-	if (newUserId != userId) {
-		// we chanted users or left a user
+	if (maskPixel != userId) {
+		// we changed users or left a user
 	}
-	userId = newUserId;
+	userId = maskPixel;
 	frontUser = newFrontUser;
 }
 
