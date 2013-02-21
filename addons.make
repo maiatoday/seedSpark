@@ -1,3 +1,4 @@
 ofxOpenNI
 ofxObjCPointer
 ofxMSAPhysics
+ofxFX

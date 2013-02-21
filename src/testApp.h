@@ -4,6 +4,7 @@
 #include "LuckyDip.h"
 #include "Spark.h"
 #include "ofxMSAPhysics.h"
+#include "ofxFX.h"
 
 class testApp: public ofBaseApp {
 
@@ -75,6 +76,8 @@ public:
 
 	//----------------- visuals
     LuckyDip* lucky;
+    ofxMask maskPaths;
+    ofImage testPaths; //TODO change this is just to get the shader going
 
 
 };

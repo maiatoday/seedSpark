@@ -16,6 +16,9 @@ void testApp::setup() {
 	}
 	setScreenRatios();
 	setupParticles();
+	testPaths.loadImage("images/PathsTest.png");
+    maskPaths.allocate(width,height);
+	maskPaths.setTexture(testPaths.getTextureReference(), 0);
 }
 
 //--------------------------------------------------------------
@@ -24,14 +27,19 @@ void testApp::update() {
 		updateKinect();
 	}
 	updateParticles();
+	maskPaths.setTexture(allUserMasks.getTextureReference(), 0);
+	maskPaths.setTexture(testPaths.getTextureReference(), 1);
+	maskPaths.update();
 	ofSetWindowTitle(ofToString(ofGetFrameRate()));
 }
 
 //--------------------------------------------------------------
 void testApp::draw() {
+	ofBackgroundGradient(ofColor::darkGrey, ofColor::black);
+	maskPaths.draw(0,0,width, height);
 	if (USE_KINECT) {
 //		drawKinect();
-		drawAllUserMask();
+//		drawAllUserMask();
 	}
 	drawParticles();
 
@@ -183,10 +191,10 @@ void testApp::drawAllUserMask() {
 	ofPushStyle();
 	ofSetColor(255,255,255,80);
 	glPushMatrix();
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
+//	glEnable(GL_BLEND);
+//	glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
 	allUserMasks.draw(0, 0, width, height);
-	glDisable(GL_BLEND);
+//	glDisable(GL_BLEND);
 	glPopMatrix();
 	ofPopStyle();
 
