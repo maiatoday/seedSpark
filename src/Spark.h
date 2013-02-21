@@ -21,6 +21,7 @@ public:
 	virtual void init();
 	virtual void update(char maskPixel, bool newFrontUser);
 	virtual void draw();
+	void drawPosition();
 
 	void setGlyph(const ofImage& glyph) {
 		this->glyph = glyph;

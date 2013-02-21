@@ -67,6 +67,7 @@ public:
 	void setupParticles();
 	void updateParticles();
 	void drawParticles();
+	void drawParticlePositions();
 	void initScene();
 	void addRandomParticle();
     void addRandomForce();

@@ -61,6 +61,15 @@ void Spark::update(char maskPixel, bool newFrontUser) {
 	frontUser = newFrontUser;
 }
 
+void Spark::drawPosition() {
+	ofPoint pos;
+	pos.set(getX(), getY(), getZ());
+	ofSetColor(255, 128, 0, 255);
+	ofRect(pos, 1, 1);
+	ofPushStyle();
+	ofPopStyle();
+}
+
 void Spark::draw() {
 
 	ofPoint pos;

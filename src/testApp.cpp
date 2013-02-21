@@ -1,12 +1,11 @@
 #include "testApp.h"
-testApp::testApp(){
+testApp::testApp() {
 
 	lucky = new LuckyDip("bin/data/images/lucky");
 }
 
-testApp::~testApp()
-{
-    delete lucky;
+testApp::~testApp() {
+	delete lucky;
 }
 //--------------------------------------------------------------
 void testApp::setup() {
@@ -17,7 +16,7 @@ void testApp::setup() {
 	setScreenRatios();
 	setupParticles();
 	testPaths.loadImage("images/PathsTest.png");
-    maskPaths.allocate(width,height);
+	maskPaths.allocate(640, 480);
 	maskPaths.setTexture(testPaths.getTextureReference(), 0);
 }
 
@@ -28,15 +27,18 @@ void testApp::update() {
 	}
 	updateParticles();
 	maskPaths.setTexture(allUserMasks.getTextureReference(), 0);
-	maskPaths.setTexture(testPaths.getTextureReference(), 1);
+//	maskPaths.setTexture(testPaths.getTextureReference(), 1);
+	maskPaths.begin(1);
+	drawParticlePositions();
+	maskPaths.end(1);
 	maskPaths.update();
 	ofSetWindowTitle(ofToString(ofGetFrameRate()));
 }
 
 //--------------------------------------------------------------
 void testApp::draw() {
-	ofBackgroundGradient(ofColor::darkGrey, ofColor::black);
-	maskPaths.draw(0,0,width, height);
+//	ofBackgroundGradient(ofColor::darkGrey, ofColor::black);
+	maskPaths.draw(0, 0, width, height);
 	if (USE_KINECT) {
 //		drawKinect();
 //		drawAllUserMask();
@@ -189,7 +191,7 @@ void testApp::drawMasks() {
 
 void testApp::drawAllUserMask() {
 	ofPushStyle();
-	ofSetColor(255,255,255,80);
+	ofSetColor(255, 255, 255, 80);
 	glPushMatrix();
 //	glEnable(GL_BLEND);
 //	glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
@@ -301,6 +303,13 @@ void testApp::updateParticles() {
 			char c = allUserMasks.getPixelsRef()[allUserMasks.width * y + x];
 			p->update(c, false);
 		}
+	}
+
+}
+void testApp::drawParticlePositions() {
+	for (unsigned int i = 0; i < physics.numberOfParticles(); i++) {
+		Spark *p = static_cast<Spark*>(physics.getParticle(i));
+		p->drawPosition();
 	}
 
 }
