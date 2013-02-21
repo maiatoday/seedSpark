@@ -24,6 +24,7 @@ void testApp::update() {
 		updateKinect();
 	}
 	updateParticles();
+	ofSetWindowTitle(ofToString(ofGetFrameRate()));
 }
 
 //--------------------------------------------------------------
