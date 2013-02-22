@@ -278,6 +278,7 @@ void testApp::addRandomParticle() {
 Spark* testApp::makeSpark(ofPoint pos, float m = 1.0f, float d = 1.0f) {
 	Spark* p = new Spark(pos, m, d);
 	p->setGlyph(lucky->getSampleGlyph());
+	p->setLucky(lucky);
 	physics.addParticle(p);
 	p->release();	// cos addParticle(p) retains it
 	return p;

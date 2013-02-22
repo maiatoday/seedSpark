@@ -43,6 +43,7 @@ LuckyDip::LuckyDip(string _dirname) {    //ctor
     } catch (std::exception& e) {
         cout << e.what() <<" opening/reading " << _dirname << endl;
     }
+    luckyColors.loadColors("images/luckyColors.jpg");
 
 }
 
@@ -67,5 +68,10 @@ bool LuckyDip::isImageFile(std::string _filename)
     if (extension == ".png")
         fileOk = true;
     return fileOk;
+}
+
+ofColor LuckyDip::getColor()
+{
+    return luckyColors.getSampleColor();
 }
 

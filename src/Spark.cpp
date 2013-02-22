@@ -46,11 +46,16 @@ void Spark::init() {
 //    label = 0;
 //    maxDistWidthSquare = MAX_DIST_SQR;
 //
+	pathColor.a = 255;
+	pathColor.r = 255;
+	pathColor.g = 128;
+	pathColor.b = 0;
 	frontUser = false;
 	userId = 0;
 	addVelocity(ofPoint(ofRandom(-10, 10), ofRandom(-10, 10), ofRandom(-10, 10)));
 	startAngle = ofRandom(-10, 40);
 	bladeInc = ofRandom(-20, 20);
+	lucky = NULL;
 }
 
 void Spark::update(char maskPixel, bool newFrontUser) {
@@ -64,7 +69,7 @@ void Spark::update(char maskPixel, bool newFrontUser) {
 void Spark::drawPosition() {
 	ofPoint pos;
 	pos.set(getX(), getY(), getZ());
-	ofSetColor(255, 128, 0, 255);
+	ofSetColor(pathColor);
 	ofRect(pos, 1, 1);
 	ofPushStyle();
 	ofPopStyle();

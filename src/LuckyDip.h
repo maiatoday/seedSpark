@@ -8,6 +8,7 @@
 #ifndef LUCKYDIP_H_
 #define LUCKYDIP_H_
 #include <ofImage.h>
+#include "ColorSampler.h"
 
 #include <vector>
 /**
@@ -18,12 +19,14 @@ public:
 	LuckyDip(std::string _basefilename);
 	virtual ~LuckyDip();
 	const ofImage& getSampleGlyph();
+	ofColor getColor();
 
 protected:
 	bool isImageFile(std::string _filename);
 private:
 	std::vector<ofImage> goodGlyphs;
 	ofImage defaultGlyph;
+	ColorSampler luckyColors;
 };
 
 #endif /* LUCKYDIP_H_ */

@@ -9,6 +9,7 @@
 #define SPARK_H_
 
 #include "ofxMSAParticle.h"
+#include "LuckyDip.h"
 /**
  * Sparks show seeds when dormant or a lucky image when touched.
  */
@@ -27,6 +28,15 @@ public:
 		this->glyph = glyph;
 	}
 
+	LuckyDip*& getLucky() {
+		return lucky;
+	}
+
+	void setLucky(LuckyDip* lucky) {
+		this->lucky = lucky;
+		pathColor = lucky->getColor();
+	}
+
 protected:
 	bool frontUser;
 	char userId;
@@ -35,6 +45,8 @@ protected:
 	int startAngle;
 	int bladeInc;
 	ofImage glyph;
+	LuckyDip* lucky;
+	ofColor pathColor;
 };
 
 #endif /* SPARK_H_ */
