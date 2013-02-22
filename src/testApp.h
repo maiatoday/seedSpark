@@ -5,6 +5,9 @@
 #include "Spark.h"
 #include "ofxMSAPhysics.h"
 #include "ofxFX.h"
+#include "ofxThreadedImageSaver.h"
+
+#define DO_VIDEO true
 
 class testApp: public ofBaseApp {
 
@@ -80,5 +83,10 @@ public:
     ofxMask maskPaths;
     ofImage testPaths; //TODO change this is just to get the shader going
 
+    bool doVideoWrite;
+#ifdef DO_VIDEO
+    ofImage saveScreen;
+    ofxThreadedImageSaver TIS;
+#endif
 
 };

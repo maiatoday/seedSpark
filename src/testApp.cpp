@@ -18,6 +18,7 @@ void testApp::setup() {
 	testPaths.loadImage("images/PathsTest.png");
 	maskPaths.allocate(640, 480);
 	maskPaths.setTexture(testPaths.getTextureReference(), 0);
+	doVideoWrite = false;
 }
 
 //--------------------------------------------------------------
@@ -44,6 +45,12 @@ void testApp::draw() {
 //		drawAllUserMask();
 	}
 	drawParticles();
+    if (doVideoWrite) {
+#ifdef DO_VIDEO
+        saveScreen.grabScreen(0,0,width,height);
+        TIS.saveThreaded(saveScreen);
+#endif
+    }
 
 }
 
@@ -55,6 +62,7 @@ void testApp::keyPressed(int key) {
 //--------------------------------------------------------------
 void testApp::keyReleased(int key) {
 
+    doVideoWrite = !doVideoWrite;
 }
 
 //--------------------------------------------------------------
