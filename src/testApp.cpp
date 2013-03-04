@@ -19,6 +19,7 @@ void testApp::setup() {
 	maskPaths.allocate(640, 480);
 	maskPaths.setTexture(testPaths.getTextureReference(), 0);
 	doVideoWrite = false;
+//	ofSetFullscreen(true); // makes compiz crash
 }
 
 //--------------------------------------------------------------
