@@ -7,6 +7,8 @@
 
 #include "Spark.h"
 
+#define MAX_VELOCITY (2.0)
+
 Spark::Spark() :
 		ofxMSAParticle() {
 	init();
@@ -52,15 +54,16 @@ void Spark::init() {
 	pathColor.b = 0;
 	frontUser = false;
 	userId = 0;
-	addVelocity(ofPoint(ofRandom(-10, 10), ofRandom(-10, 10), ofRandom(-10, 10)));
+	addVelocity(ofPoint(ofRandom(-MAX_VELOCITY, MAX_VELOCITY), ofRandom(-MAX_VELOCITY, MAX_VELOCITY), ofRandom(-MAX_VELOCITY, MAX_VELOCITY)));
 	startAngle = ofRandom(-10, 40);
 	bladeInc = ofRandom(-20, 20);
+	spinAngleInc = ofRandom(-MAX_VELOCITY, MAX_VELOCITY);
 	lucky = NULL;
 }
 
 void Spark::update(char maskPixel, bool newFrontUser) {
 	if (maskPixel != userId) {
-		// we changed users or left a user
+		addVelocity(ofPoint(ofRandom(-MAX_VELOCITY, MAX_VELOCITY), ofRandom(-MAX_VELOCITY, MAX_VELOCITY), ofRandom(-MAX_VELOCITY, MAX_VELOCITY)));
 	}
 	userId = maskPixel;
 	frontUser = newFrontUser;

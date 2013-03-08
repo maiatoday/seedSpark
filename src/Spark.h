@@ -43,6 +43,7 @@ protected:
 	void drawSeed(ofPoint pos);
 	void drawSpark(ofPoint pos);
 	int startAngle;
+	int spinAngleInc;
 	int bladeInc;
 	ofImage glyph;
 	LuckyDip* lucky;
