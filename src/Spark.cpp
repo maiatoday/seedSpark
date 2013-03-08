@@ -54,16 +54,28 @@ void Spark::init() {
 	pathColor.b = 0;
 	frontUser = false;
 	userId = 0;
-	addVelocity(ofPoint(ofRandom(-MAX_VELOCITY, MAX_VELOCITY), ofRandom(-MAX_VELOCITY, MAX_VELOCITY), ofRandom(-MAX_VELOCITY, MAX_VELOCITY)));
+	addVelocity(
+			ofPoint(ofRandom(-MAX_VELOCITY, MAX_VELOCITY), ofRandom(-MAX_VELOCITY, MAX_VELOCITY),
+					ofRandom(-MAX_VELOCITY, MAX_VELOCITY)));
 	startAngle = ofRandom(-10, 40);
 	bladeInc = ofRandom(-20, 20);
 	spinAngleInc = ofRandom(-MAX_VELOCITY, MAX_VELOCITY);
+	spinAngle = 0;
 	lucky = NULL;
 }
 
 void Spark::update(char maskPixel, bool newFrontUser) {
 	if (maskPixel != userId) {
-		addVelocity(ofPoint(ofRandom(-MAX_VELOCITY, MAX_VELOCITY), ofRandom(-MAX_VELOCITY, MAX_VELOCITY), ofRandom(-MAX_VELOCITY, MAX_VELOCITY)));
+		addVelocity(
+				ofPoint(ofRandom(-MAX_VELOCITY, MAX_VELOCITY), ofRandom(-MAX_VELOCITY, MAX_VELOCITY),
+						ofRandom(-MAX_VELOCITY, MAX_VELOCITY)));
+	}
+	spinAngle += spinAngleInc;
+	if ((spinAngle > 0) && (spinAngle > 360)) {
+		spinAngle = 0;
+	}
+	if ((spinAngleInc < 0) && (spinAngle < 0)) {
+		spinAngle = 360;
 	}
 	userId = maskPixel;
 	frontUser = newFrontUser;
@@ -82,15 +94,21 @@ void Spark::draw() {
 
 	ofPoint pos;
 	pos.set(getX(), getY(), getZ());
+	ofPoint origin;
+	origin.set(0, 0, 0);
 	ofPushStyle();
+	ofPushMatrix();
+	ofTranslate(pos);
+	ofRotate(spinAngle);
 	if (userId == 0) {
 		// not over a user
-		drawSeed(pos);
+		drawSeed(origin);
 	} else {
 		// over a user
-		drawSpark(pos);
+		drawSpark(origin);
 
 	}
+	ofPopMatrix();
 	ofPopStyle();
 
 }
