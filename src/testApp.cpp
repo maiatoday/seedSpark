@@ -1,5 +1,6 @@
 #include "testApp.h"
-testApp::testApp(): fullscreen(false), sparkCount(START_SPARK_COUNT){
+testApp::testApp() :
+		fullscreen(false), sparkCount(START_SPARK_COUNT), toggle(false) {
 
 	lucky = new LuckyDip("bin/data/images/lucky");
 }
@@ -9,18 +10,18 @@ testApp::~testApp() {
 }
 //--------------------------------------------------------------
 void testApp::setup() {
-	 if (XML.loadFile("mySettings.xml")) {
-	        sparkCount    = XML.getValue("ROOM:SPARK_COUNT", START_SPARK_COUNT);
-	        fullscreen   = (XML.getValue("ROOM:FULLSCREEN", 1) == 1)?true:false;
-	        USE_KINECT   = (XML.getValue("ROOM:KINECT", 1) == 1)?true:false;
-	        doVideoWrite   = (XML.getValue("ROOM:VIDEO", 1) == 1)?true:false;
-	    }
+	if (XML.loadFile("mySettings.xml")) {
+		sparkCount = XML.getValue("ROOM:SPARK_COUNT", START_SPARK_COUNT);
+		fullscreen = (XML.getValue("ROOM:FULLSCREEN", 1) == 1) ? true : false;
+		USE_KINECT = (XML.getValue("ROOM:KINECT", 1) == 1) ? true : false;
+		doVideoWrite = (XML.getValue("ROOM:VIDEO", 1) == 1) ? true : false;
+	}
 	if (USE_KINECT) {
 		setupKinect();
 	}
-    ofBackground(0,0,0);
+	ofBackground(0, 0, 0);
 	ofSetFullscreen(fullscreen);
-    ofHideCursor();
+	ofHideCursor();
 	setScreenRatios();
 	setupParticles();
 	testPaths.loadImage("images/PathsTest.png");
@@ -51,12 +52,12 @@ void testApp::draw() {
 //		drawAllUserMask();
 	}
 	drawParticles();
-    if (doVideoWrite) {
+	if (doVideoWrite) {
 #ifdef DO_VIDEO
-        saveScreen.grabScreen(0,0,width,height);
-        TIS.saveThreaded(saveScreen);
+		saveScreen.grabScreen(0, 0, width, height);
+		TIS.saveThreaded(saveScreen);
 #endif
-    }
+	}
 
 }
 
@@ -68,7 +69,20 @@ void testApp::keyPressed(int key) {
 //--------------------------------------------------------------
 void testApp::keyReleased(int key) {
 
-    doVideoWrite = !doVideoWrite;
+	switch (key) {
+	case '`':
+		doVideoWrite = !doVideoWrite;
+		break;
+	case ' ':
+		toggle = !toggle;
+		if (toggle) {
+			lucky->loadLuckyColors("images/luckyColors2.jpg");
+		} else {
+			lucky->loadLuckyColors("images/luckyColors3.jpg");
+		}
+		changeParticleColors();
+		break;
+	}
 }
 
 //--------------------------------------------------------------
@@ -320,6 +334,13 @@ void testApp::drawParticlePositions() {
 	for (unsigned int i = 0; i < physics.numberOfParticles(); i++) {
 		Spark *p = static_cast<Spark*>(physics.getParticle(i));
 		p->drawPosition();
+	}
+
+}
+void testApp::changeParticleColors() {
+	for (unsigned int i = 0; i < physics.numberOfParticles(); i++) {
+		Spark *p = static_cast<Spark*>(physics.getParticle(i));
+		p->setNewColor();
 	}
 
 }

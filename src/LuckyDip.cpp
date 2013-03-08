@@ -75,3 +75,7 @@ ofColor LuckyDip::getColor()
     return luckyColors.getSampleColor();
 }
 
+void LuckyDip::loadLuckyColors(std::string _basefilename) {
+	cout << "loading colors opening/reading " << _basefilename << endl;
+	luckyColors.loadColors(_basefilename, false);
+}

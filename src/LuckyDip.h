@@ -20,6 +20,7 @@ public:
 	virtual ~LuckyDip();
 	const ofImage& getSampleGlyph();
 	ofColor getColor();
+	void loadLuckyColors(std::string _basefilename);
 
 protected:
 	bool isImageFile(std::string _filename);

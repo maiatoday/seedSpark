@@ -74,6 +74,7 @@ public:
 	void updateParticles();
 	void drawParticles();
 	void drawParticlePositions();
+	void changeParticleColors();
 	void initScene();
 	void addRandomParticle();
     void addRandomForce();
@@ -81,11 +82,12 @@ public:
 	ofxMSAPhysics physics;
 
 	//---------------- from XML settings
-    int sparkCount;
     bool fullscreen;
+    int sparkCount;
     ofxXmlSettings XML;
 
 	//----------------- visuals
+    bool toggle;
     LuckyDip* lucky;
     ofxMask maskPaths;
     ofImage testPaths; //TODO change this is just to get the shader going

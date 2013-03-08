@@ -22,14 +22,14 @@ ColorSampler::~ColorSampler() {
 	//dtor
 
 	// bleargh vector of pointers so must delete objects
-	for (unsigned int i = 0; i < goodColors.size(); i++)
-		delete goodColors[i];
-	goodColors.clear();
+	clearColors();
 }
-void ColorSampler::loadColors(string _filename) {
+
+void ColorSampler::loadColors(string _filename, bool unique) {
 
 	bool loadOk = loadImage(_filename);
 	if (loadOk) {
+		clearColors();
 		int bytesPerPixel = 1;
 		switch (type) {
 		case OF_IMAGE_COLOR:
@@ -54,15 +54,18 @@ void ColorSampler::loadColors(string _filename) {
 				newColor->b = pPixels[i + 2];
 				newColor->a = 0xff;
 
-				//check if we already have it in our vector
 				bool colorFound = true;
-//                for (unsigned int j = 0; j < goodColors.size(); j++) {
-//                    if ((newColor->r == goodColors[j]->r) &&
-//                            (newColor->g == goodColors[j]->g) &&
-//                            (newColor->b == goodColors[j]->b)) {
-//                        colorFound = true;
-//                    }
-//                }
+				if (unique) {
+					//check if we already have it in our vector
+					colorFound = false;
+					for (unsigned int j = 0; j < goodColors.size(); j++) {
+						if ((newColor->r == goodColors[j]->r) && (newColor->g == goodColors[j]->g)
+								&& (newColor->b == goodColors[j]->b)) {
+							colorFound = true;
+							break;
+						}
+					}
+				}
 				if (colorFound) {
 					goodColors.push_back(newColor);
 				} else {
@@ -71,6 +74,14 @@ void ColorSampler::loadColors(string _filename) {
 			}
 		}
 	}
+
+}
+
+void ColorSampler::clearColors() {
+
+	for (unsigned int i = 0; i < goodColors.size(); i++)
+		delete goodColors[i];
+	goodColors.clear();
 
 }
 

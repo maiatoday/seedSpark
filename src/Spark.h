@@ -23,6 +23,9 @@ public:
 	virtual void update(char maskPixel, bool newFrontUser);
 	virtual void draw();
 	void drawPosition();
+	void setNewColor() {
+		pathColor = lucky->getColor();
+	}
 
 	void setGlyph(const ofImage& glyph) {
 		this->glyph = glyph;

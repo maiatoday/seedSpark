@@ -11,12 +11,13 @@ public:
 	ColorSampler(std::string _filename);
 	virtual ~ColorSampler();
 	ofColor getSampleColor();
-	void loadColors(std::string _filename);
+	void loadColors(std::string _filename, bool unique = false);
 protected:
 private:
 	std::vector<ofColor*> goodColors;
 	ofColor defaultColor;
 	unsigned char* pPixels;
+	void clearColors();
 
 };
 
