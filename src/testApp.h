@@ -6,8 +6,11 @@
 #include "ofxMSAPhysics.h"
 #include "ofxFX.h"
 #include "ofxThreadedImageSaver.h"
+#include "ofxXmlSettings.h"
 
 #define DO_VIDEO true
+
+#define START_SPARK_COUNT		200
 
 class testApp: public ofBaseApp {
 
@@ -76,7 +79,11 @@ public:
     void addRandomForce();
 	Spark* makeSpark(ofPoint pos, float m, float d);
 	ofxMSAPhysics physics;
+
+	//---------------- from XML settings
     int sparkCount;
+    bool fullscreen;
+    ofxXmlSettings XML;
 
 	//----------------- visuals
     LuckyDip* lucky;

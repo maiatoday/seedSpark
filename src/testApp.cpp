@@ -1,5 +1,5 @@
 #include "testApp.h"
-testApp::testApp() {
+testApp::testApp(): fullscreen(false), sparkCount(START_SPARK_COUNT){
 
 	lucky = new LuckyDip("bin/data/images/lucky");
 }
@@ -9,17 +9,23 @@ testApp::~testApp() {
 }
 //--------------------------------------------------------------
 void testApp::setup() {
-	USE_KINECT = true;
+	 if (XML.loadFile("mySettings.xml")) {
+	        sparkCount    = XML.getValue("ROOM:SPARK_COUNT", START_SPARK_COUNT);
+	        fullscreen   = (XML.getValue("ROOM:FULLSCREEN", 1) == 1)?true:false;
+	        USE_KINECT   = (XML.getValue("ROOM:KINECT", 1) == 1)?true:false;
+	        doVideoWrite   = (XML.getValue("ROOM:VIDEO", 1) == 1)?true:false;
+	    }
 	if (USE_KINECT) {
 		setupKinect();
 	}
+    ofBackground(0,0,0);
+	ofSetFullscreen(fullscreen);
+    ofHideCursor();
 	setScreenRatios();
 	setupParticles();
 	testPaths.loadImage("images/PathsTest.png");
 	maskPaths.allocate(640, 480);
 	maskPaths.setTexture(testPaths.getTextureReference(), 0);
-	doVideoWrite = false;
-//	ofSetFullscreen(true); // makes compiz crash
 }
 
 //--------------------------------------------------------------
@@ -39,7 +45,6 @@ void testApp::update() {
 
 //--------------------------------------------------------------
 void testApp::draw() {
-//	ofBackgroundGradient(ofColor::darkGrey, ofColor::black);
 	maskPaths.draw(0, 0, width, height);
 	if (USE_KINECT) {
 //		drawKinect();
@@ -221,22 +226,17 @@ void testApp::setScreenRatios(void) {
 	if (windowMode == OF_FULLSCREEN) {
 		width = ofGetScreenWidth();
 		height = ofGetScreenHeight();
-		fromKinectWidth = (float) width / (float) kinectWidth;
-		fromKinectHeight = (float) height / (float) kinectHeight;
-		toKinectWidth = (float) kinectWidth / (float) width;
-		toKinectHeight = (float) kinectHeight / (float) height;
 	} else if (windowMode == OF_WINDOW) {
 		width = ofGetWidth();
 		height = ofGetHeight();
-		fromKinectWidth = (float) width / (float) kinectWidth;
-		fromKinectHeight = (float) height / (float) kinectHeight;
-		toKinectWidth = (float) kinectWidth / (float) width;
-		toKinectHeight = (float) kinectHeight / (float) height;
 	}
+	fromKinectWidth = (float) width / (float) kinectWidth;
+	fromKinectHeight = (float) height / (float) kinectHeight;
+	toKinectWidth = (float) kinectWidth / (float) width;
+	toKinectHeight = (float) kinectHeight / (float) height;
 	physics.setWorldSize(ofPoint(0, 0, 0), ofPoint(width, height, width));
 }
 
-#define START_SPARK_COUNT		200
 #define	GRAVITY					1
 #define SECTOR_COUNT			10
 #define MIN_MASS				1
@@ -248,19 +248,19 @@ void testApp::setScreenRatios(void) {
 #define NODE_MAX_RADIUS			7
 #define FORCE_AMOUNT			10
 void testApp::setupParticles() {
-	sparkCount = START_SPARK_COUNT;
 	physics.setGravity(ofPoint(0, GRAVITY / 2, 0));
 
 	// set world dimensions, not essential, but speeds up collision
-	physics.setWorldSize(ofPoint(0, 0, 0), ofPoint(width, height, width));
+//	physics.setWorldSize(ofPoint(0, 0, 0), ofPoint(width, height, width));
 	physics.setSectorCount(SECTOR_COUNT);
 	physics.setDrag(0.97f);
 	physics.setDrag(1);		// FIXTHIS
 	//physics.enableCollision();
 
 	initScene();
-	for (int i = 0; i < sparkCount; i++)
+	for (int i = 0; i < sparkCount; i++) {
 		addRandomParticle();
+	}
 
 }
 void testApp::initScene() {
