@@ -91,6 +91,7 @@ public:
     int counter;
     LuckyDip* lucky;
     ofxMask maskPaths;
+	ofImage bigMask;
 
     bool doVideoWrite;
 #ifdef DO_VIDEO

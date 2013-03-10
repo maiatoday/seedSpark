@@ -24,7 +24,9 @@ void testApp::setup() {
 	ofHideCursor();
 	setScreenRatios();
 	setupParticles();
-	maskPaths.allocate(width, height);
+//	maskPaths.allocate(width, height);
+	maskPaths.allocate(kinectWidth, kinectHeight);
+//	bigMask.loadImage("images/defaultMask.png");
 }
 
 //--------------------------------------------------------------
@@ -33,13 +35,15 @@ void testApp::update() {
 		updateKinect();
 	}
 	updateParticles();
-	ofImage bigMask;
-	bigMask.clone(allUserMasks);
-	bigMask.resize(width, height);
-	maskPaths.setTexture(bigMask.getTextureReference(), 0);
-//	maskPaths.setTexture(testPaths.getTextureReference(), 1);
+//	bigMask = allUserMasks;
+//	bigMask.resize(width, height);
+//	maskPaths.setTexture(bigMask.getTextureReference(), 0);
+	maskPaths.setTexture(allUserMasks.getTextureReference(), 0);
 	maskPaths.begin(1);
+	ofPushMatrix();
+	ofScale(toKinectWidth, toKinectHeight, toKinectWidth);
 	drawParticlePositions();
+	ofPopMatrix();
 	maskPaths.end(1);
 	maskPaths.update();
 	ofSetWindowTitle(ofToString(ofGetFrameRate()));
