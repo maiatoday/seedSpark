@@ -150,6 +150,7 @@ void Spark::drawSeed(ofPoint pos) {
 void Spark::drawSpark(ofPoint pos) {
 
 	ofEnableAlphaBlending();
+	glyph.setAnchorPercent(0.5, 0.5);
 	glyph.draw(pos);
 
 }
