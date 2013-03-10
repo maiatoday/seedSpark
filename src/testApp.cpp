@@ -81,27 +81,32 @@ void testApp::keyReleased(int key) {
 //		} else {
 //			lucky->loadLuckyColors("images/luckyColors3.jpg");
 //		}
-		counter++;
-		if (counter == 5) counter = 0;
 
-	    switch (counter) {
-	    default:
-	    case 0:
-	    	lucky->loadLuckyColors("images/luckyColors1.jpg");
-	    	break;
-	    case 1:
-	    	lucky->loadLuckyColors("images/luckyColors4.jpg");
-	    	break;
-	    case 2:
-	    	lucky->loadLuckyColors("images/luckyColors2.jpg");
-	    	break;
-	    case 3:
-	    	lucky->loadLuckyColors("images/luckyColors5.jpg");
-	    	break;
-	    case 4:
-	    	lucky->loadLuckyColors("images/luckyColors3.jpg");
-	    	break;
-	    }
+		switch (counter) {
+		default:
+		case 0:
+			lucky->loadLuckyColors("images/luckyColors1.jpg");
+			break;
+		case 1:
+			lucky->loadLuckyColors("images/luckyColors4.jpg");
+			break;
+		case 2:
+			lucky->loadLuckyColors("images/luckyColors2.jpg");
+			break;
+		case 3:
+			lucky->loadLuckyColors("images/luckyColors5.jpg");
+			break;
+		case 4:
+			lucky->loadLuckyColors("images/luckyColors3.jpg");
+			break;
+		}
+		changeParticleColors();
+		counter++;
+		if (counter == 5)
+			counter = 0;
+		break;
+	case 'x':
+		lucky->loadLuckyColors("images/luckyColorsNight.jpg");
 		changeParticleColors();
 		break;
 	}
