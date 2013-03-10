@@ -84,10 +84,15 @@ void Spark::update(char maskPixel, bool newFrontUser) {
 void Spark::drawPosition() {
 	ofPoint pos;
 	pos.set(getX(), getY(), getZ());
-	ofSetColor(pathColor);
-	ofRect(pos, 1, 1);
+	ofPoint origin;
+	origin.set(0, 0, 0);
 	ofPushStyle();
+	ofPushMatrix();
+	ofTranslate(pos);
+	ofSetColor(pathColor);
+	ofRect(origin, 1, 1);
 	ofPopStyle();
+	ofPopMatrix();
 }
 
 void Spark::draw() {
@@ -144,8 +149,6 @@ void Spark::drawSeed(ofPoint pos) {
 }
 void Spark::drawSpark(ofPoint pos) {
 
-//	ofSetColor(255, 128, 0, 255);
-//	ofRect(getX(), getY(), 20, 20);
 	ofEnableAlphaBlending();
 	glyph.draw(pos);
 

@@ -24,9 +24,9 @@ void testApp::setup() {
 	ofHideCursor();
 	setScreenRatios();
 	setupParticles();
-	testPaths.loadImage("images/PathsTest.png");
+//	testPaths.loadImage("images/PathsTest.png");
 	maskPaths.allocate(640, 480);
-	maskPaths.setTexture(testPaths.getTextureReference(), 0);
+//	maskPaths.setTexture(testPaths.getTextureReference(), 0);
 }
 
 //--------------------------------------------------------------
@@ -123,7 +123,7 @@ void testApp::dragEvent(ofDragInfo dragInfo) {
 void testApp::setupKinect() {
 	isLive = true;
 	isTracking = true;
-	isTrackingHands = true;
+	isTrackingHands = false;
 	isFiltering = false;
 	isCloud = false;
 	isCPBkgnd = true;
@@ -147,10 +147,11 @@ void testApp::setupKinect() {
 	recordUser.setUseCloudPoints(isCloud);
 	recordUser.setMaxNumberOfUsers(MAX_NUMBER_USERS);// use this to set dynamic max number of users (NB: that a hard upper limit is defined by MAX_NUMBER_USERS in ofxUserGenerator)
 
-	recordHandTracker.setup(&recordContext, 4);
-	recordHandTracker.setSmoothing(filterFactor);		// built in openni hand track smoothing...
-	recordHandTracker.setFilterFactors(filterFactor);// custom smoothing/filtering (can also set per hand with setFilterFactor)...set them all to 0.1f to begin with
-
+	if (isTrackingHands) {
+		recordHandTracker.setup(&recordContext, 4);
+		recordHandTracker.setSmoothing(filterFactor);		// built in openni hand track smoothing...
+		recordHandTracker.setFilterFactors(filterFactor);// custom smoothing/filtering (can also set per hand with setFilterFactor)...set them all to 0.1f to begin with
+	}
 	recordContext.toggleRegisterViewport();
 	recordContext.toggleMirror();
 
