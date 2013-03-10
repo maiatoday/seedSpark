@@ -88,9 +88,9 @@ public:
 
 	//----------------- visuals
     bool toggle;
+    int counter;
     LuckyDip* lucky;
     ofxMask maskPaths;
-    ofImage testPaths; //TODO change this is just to get the shader going
 
     bool doVideoWrite;
 #ifdef DO_VIDEO

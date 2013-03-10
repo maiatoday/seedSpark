@@ -1,6 +1,6 @@
 #include "testApp.h"
 testApp::testApp() :
-		fullscreen(false), sparkCount(START_SPARK_COUNT), toggle(false) {
+		fullscreen(false), sparkCount(START_SPARK_COUNT), toggle(false), counter(0) {
 
 	lucky = new LuckyDip("bin/data/images/lucky");
 }
@@ -24,9 +24,7 @@ void testApp::setup() {
 	ofHideCursor();
 	setScreenRatios();
 	setupParticles();
-//	testPaths.loadImage("images/PathsTest.png");
-	maskPaths.allocate(640, 480);
-//	maskPaths.setTexture(testPaths.getTextureReference(), 0);
+	maskPaths.allocate(width, height);
 }
 
 //--------------------------------------------------------------
@@ -35,7 +33,10 @@ void testApp::update() {
 		updateKinect();
 	}
 	updateParticles();
-	maskPaths.setTexture(allUserMasks.getTextureReference(), 0);
+	ofImage bigMask;
+	bigMask.clone(allUserMasks);
+	bigMask.resize(width, height);
+	maskPaths.setTexture(bigMask.getTextureReference(), 0);
 //	maskPaths.setTexture(testPaths.getTextureReference(), 1);
 	maskPaths.begin(1);
 	drawParticlePositions();
@@ -75,11 +76,32 @@ void testApp::keyReleased(int key) {
 		break;
 	case ' ':
 		toggle = !toggle;
-		if (toggle) {
-			lucky->loadLuckyColors("images/luckyColors2.jpg");
-		} else {
-			lucky->loadLuckyColors("images/luckyColors3.jpg");
-		}
+//		if (toggle) {
+//			lucky->loadLuckyColors("images/luckyColors2.jpg");
+//		} else {
+//			lucky->loadLuckyColors("images/luckyColors3.jpg");
+//		}
+		counter++;
+		if (counter == 5) counter = 0;
+
+	    switch (counter) {
+	    default:
+	    case 0:
+	    	lucky->loadLuckyColors("images/luckyColors1.jpg");
+	    	break;
+	    case 1:
+	    	lucky->loadLuckyColors("images/luckyColors4.jpg");
+	    	break;
+	    case 2:
+	    	lucky->loadLuckyColors("images/luckyColors2.jpg");
+	    	break;
+	    case 3:
+	    	lucky->loadLuckyColors("images/luckyColors5.jpg");
+	    	break;
+	    case 4:
+	    	lucky->loadLuckyColors("images/luckyColors3.jpg");
+	    	break;
+	    }
 		changeParticleColors();
 		break;
 	}
@@ -270,7 +292,7 @@ void testApp::setupParticles() {
 	physics.setSectorCount(SECTOR_COUNT);
 	physics.setDrag(0.97f);
 	physics.setDrag(1);		// FIXTHIS
-	//physics.enableCollision();
+	physics.disableCollision();
 
 	initScene();
 	for (int i = 0; i < sparkCount; i++) {

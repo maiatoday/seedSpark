@@ -90,7 +90,7 @@ void Spark::drawPosition() {
 	ofPushMatrix();
 	ofTranslate(pos);
 	ofSetColor(pathColor);
-	ofRect(origin, 1, 1);
+	ofRect(origin, 2, 2);
 	ofPopStyle();
 	ofPopMatrix();
 }
