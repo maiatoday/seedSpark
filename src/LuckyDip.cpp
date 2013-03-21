@@ -10,7 +10,7 @@
 #include <dirent.h>
 
 using namespace std;
-#define MAX_GLYPH_SAMPLES (50)
+#define MAX_GLYPH_SAMPLES (84)
 
 LuckyDip::LuckyDip(string _dirname) {    //ctor
     defaultGlyph.loadImage("images/defaultGlyph.png");

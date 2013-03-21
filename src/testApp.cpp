@@ -280,7 +280,7 @@ void testApp::setScreenRatios(void) {
 	fromKinectHeight = (float) height / (float) kinectHeight;
 	toKinectWidth = (float) kinectWidth / (float) width;
 	toKinectHeight = (float) kinectHeight / (float) height;
-	physics.setWorldSize(ofPoint(0, 0, 0), ofPoint(width, height, width));
+	physics.setWorldSize(ofPoint(0, 0, 0), ofPoint(width, height, height));
 }
 
 #define	GRAVITY					1
@@ -294,7 +294,8 @@ void testApp::setScreenRatios(void) {
 #define NODE_MAX_RADIUS			7
 #define FORCE_AMOUNT			10
 void testApp::setupParticles() {
-	physics.setGravity(ofPoint(0, GRAVITY / 2, 0));
+//	physics.setGravity(ofPoint(0, GRAVITY / 5, 0));
+	physics.setGravity(ofPoint(0, 0, 0));
 
 	// set world dimensions, not essential, but speeds up collision
 //	physics.setWorldSize(ofPoint(0, 0, 0), ofPoint(width, height, width));
