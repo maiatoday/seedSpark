@@ -178,7 +178,7 @@ void testApp::keyReleased(int key)
 
 
     case '8':
-        lucky->loadLuckyColors("images/luckyColors8jpg");
+        lucky->loadLuckyColors("images/luckyColors8.jpg");
         changeParticleColors();
         break;
 
