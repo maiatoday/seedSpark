@@ -51,6 +51,7 @@ public:
 
 	void drawMasks();
 	void drawAllUserMask();
+	void clearMaskPath();
 
 	int nearThreshold, farThreshold;
 

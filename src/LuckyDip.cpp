@@ -12,48 +12,64 @@
 using namespace std;
 #define MAX_GLYPH_SAMPLES (84)
 
-LuckyDip::LuckyDip(string _dirname) {    //ctor
+LuckyDip::LuckyDip(string _dirname)      //ctor
+{
     defaultGlyph.loadImage("images/defaultGlyph.png");
 
     DIR *dir; //the directory
     struct dirent *dp;
     //open the directory
-    try {
+    try
+    {
         dir  = opendir(_dirname.c_str());
-        if (dir != NULL) {
-            while ((dp = readdir(dir)) != NULL) {
-                if (dp->d_type == DT_REG) {
+        if (dir != NULL)
+        {
+            cout << "open directory " << _dirname << endl;
+            while ((dp = readdir(dir)) != NULL)
+            {
+                if (dp->d_type == DT_REG)
+                {
+                 //   cout << "filename read " << dp->d_name << endl;
                     // images are loaded relative to the data directory so we chop this part off first
-                    string filename(_dirname.substr(strlen("bin/data/"),_dirname.length()));
+                    string filename(_dirname.substr(strlen("data/"),_dirname.length()));
                     filename.append("/");
                     filename.append(dp->d_name);
-
-                    if (isImageFile(filename)) {
+                //    cout << "filename to open " << filename << endl;
+                    if (isImageFile(filename))
+                    {
+                  //      cout << "filename opened " << filename << endl;
                         ofImage newGlyph;
-                        if (newGlyph.loadImage(filename)) {
+                        if (newGlyph.loadImage(filename))
+                        {
                             goodGlyphs.push_back(newGlyph);
                         }
                     }
                 }
             }
             closedir(dir);
-        } else {
+        }
+        else
+        {
             cout << "can't open directory" << _dirname << endl;
         }
-    } catch (std::exception& e) {
+    }
+    catch (std::exception& e)
+    {
         cout << e.what() <<" opening/reading " << _dirname << endl;
     }
     luckyColors.loadColors("images/luckyColors.jpg");
 
 }
 
-LuckyDip::~LuckyDip() {
+LuckyDip::~LuckyDip()
+{
     goodGlyphs.clear();
 }
 
 const ofImage& LuckyDip::getSampleGlyph()
 {
-    if (goodGlyphs.size() > 0) {
+    if (goodGlyphs.size() > 0)
+    {
         float rr = ofRandom(0, goodGlyphs.size()-1);
         return goodGlyphs[(int) rr];
     }
@@ -75,7 +91,8 @@ ofColor LuckyDip::getColor()
     return luckyColors.getSampleColor();
 }
 
-void LuckyDip::loadLuckyColors(std::string _basefilename) {
-	cout << "loading colors opening/reading " << _basefilename << endl;
-	luckyColors.loadColors(_basefilename, false);
+void LuckyDip::loadLuckyColors(std::string _basefilename)
+{
+    cout << "loading colors opening/reading " << _basefilename << endl;
+    luckyColors.loadColors(_basefilename, false);
 }
